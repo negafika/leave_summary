@@ -5,7 +5,7 @@
     'summary': 'Track accrual expiry with clear history, leave summaries, and improved visibility',
     'author': 'Negaye Fikadu',
     'website': 'https://negaye-portfolio.vercel.app',
-    'images': ['hr_leave_accrual_expiry/static/description/images/cover.png',],
+    'images': ['static/description/images/cover.png',],
     'description': '''
         Extend Odoo 18 Time Off accruals with clear visibility into leave expiry.
 
