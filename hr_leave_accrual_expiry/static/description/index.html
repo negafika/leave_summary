@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leave Summary | Odoo 18</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                     Helvetica, Arial, sans-serif;
+        background: #f5f3f8;
+        color: #292533;
+        line-height: 1.65;
+    }
+
+    .page {
+        max-width: 1100px;
+        margin: 35px auto;
+        background: #ffffff;
+        overflow: hidden;
+        border-radius: 18px;
+        box-shadow: 0 15px 50px rgba(45, 30, 70, 0.12);
+    }
+
+    /* HERO */
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 80px 60px 75px;
+        color: white;
+        background:
+            radial-gradient(circle at 85% 15%, rgba(255,255,255,.18), transparent 25%),
+            radial-gradient(circle at 10% 90%, rgba(255,255,255,.10), transparent 30%),
+            linear-gradient(135deg, #714b9e 0%, #52377d 48%, #34264e 100%);
+    }
+
+    .hero:after {
+        content: "";
+        position: absolute;
+        width: 350px;
+        height: 350px;
+        right: -130px;
+        bottom: -180px;
+        border-radius: 50%;
+        border: 50px solid rgba(255,255,255,.06);
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 7px 15px;
+        margin-bottom: 20px;
+        border-radius: 30px;
+        background: rgba(255,255,255,.14);
+        border: 1px solid rgba(255,255,255,.2);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: .4px;
+    }
+
+    .hero h1 {
+        position: relative;
+        z-index: 1;
+        margin: 0 0 15px;
+        font-size: 52px;
+        line-height: 1.1;
+        letter-spacing: -1.5px;
+    }
+
+    .hero .subtitle {
+        position: relative;
+        z-index: 1;
+        max-width: 760px;
+        margin: 0;
+        font-size: 21px;
+        line-height: 1.55;
+        color: rgba(255,255,255,.88);
+    }
+
+    .hero-note {
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 18px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.1);
+        font-size: 14px;
+        color: rgba(255,255,255,.85);
+    }
+
+    /* SECTIONS */
+
+    section {
+        padding: 55px 60px;
+    }
+
+    .section-label {
+        margin-bottom: 7px;
+        color: #714b9e;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    h2 {
+        margin: 0 0 18px;
+        color: #2c2435;
+        font-size: 30px;
+        line-height: 1.25;
+    }
+
+    .intro {
+        max-width: 850px;
+        color: #625b68;
+        font-size: 17px;
+    }
+
+    .intro strong {
+        color: #34264e;
+    }
+
+    /* FEATURE CARDS */
+
+    .features-section {
+        background: #faf9fc;
+    }
+
+    .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-top: 30px;
+    }
+
+    .feature {
+        position: relative;
+        padding: 28px 25px;
+        min-height: 205px;
+        background: white;
+        border: 1px solid #ebe6f0;
+        border-radius: 14px;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .feature:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(60,40,80,.10);
+    }
+
+    .feature-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+        border-radius: 12px;
+        background: #f0eafa;
+        color: #714b9e;
+        font-size: 21px;
+        font-weight: 700;
+    }
+
+    .feature:nth-child(2) .feature-icon {
+        background: #e9f3ff;
+        color: #3478b8;
+    }
+
+    .feature:nth-child(3) .feature-icon {
+        background: #fff1df;
+        color: #c47b22;
+    }
+
+    .feature:nth-child(4) .feature-icon {
+        background: #e8f7ef;
+        color: #37855c;
+    }
+
+    .feature:nth-child(5) .feature-icon {
+        background: #fce9f1;
+        color: #b34f78;
+    }
+
+    .feature:nth-child(6) .feature-icon {
+        background: #eeeafa;
+        color: #62509b;
+    }
+
+    .feature h3 {
+        margin: 0 0 9px;
+        font-size: 18px;
+        color: #302638;
+    }
+
+    .feature p {
+        margin: 0;
+        color: #6d6673;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* HOW IT WORKS */
+
+    .workflow {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        margin-top: 35px;
+    }
+
+    .step {
+        position: relative;
+        padding: 20px 35px 20px 0;
+    }
+
+    .step:not(:last-child):after {
+        content: "→";
+        position: absolute;
+        right: 18px;
+        top: 30px;
+        color: #b9acc8;
+        font-size: 25px;
+    }
+
+    .step-number {
+        display: inline-flex;
+        width: 38px;
+        height: 38px;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        border-radius: 50%;
+        background: #714b9e;
+        color: white;
+        font-weight: 700;
+    }
+
+    .step h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+    }
+
+    .step p {
+        margin: 0;
+        color: #6d6673;
+        font-size: 14px;
+    }
+
+    /* SCREENSHOTS */
+
+    .screenshots-section {
+        background: #faf9fc;
+    }
+
+    .screenshots {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .screenshot {
+        overflow: hidden;
+        background: white;
+        border: 1px solid #e8e2ed;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(50,30,70,.06);
+    }
+
+    .screenshot-title {
+        padding: 17px 20px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #40364a;
+    }
+
+    .screenshot-placeholder {
+        height: 260px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:
+            linear-gradient(135deg, #f0edf5, #faf9fc);
+        color: #a39aa9;
+        font-size: 14px;
+    }
+
+    .screenshot img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    /* NATIVE LOGIC */
+
+    .native {
+        color: white;
+        background: linear-gradient(135deg, #332541, #513873);
+    }
+
+    .native .section-label {
+        color: #d5b9f2;
+    }
+
+    .native h2 {
+        color: white;
+    }
+
+    .native .intro {
+        color: rgba(255,255,255,.78);
+    }
+
+    .native-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 28px;
+    }
+
+    .native-item {
+        padding: 17px 20px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.08);
+        border: 1px solid rgba(255,255,255,.08);
+        color: rgba(255,255,255,.88);
+    }
+
+    .native-item strong {
+        color: white;
+    }
+
+    /* NON-GOALS */
+
+    .not-section {
+        background: #fff;
+    }
+
+    .not-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .not-item {
+        padding: 14px 18px;
+        border-left: 3px solid #d8d0df;
+        background: #faf9fb;
+        color: #625b68;
+        font-size: 14px;
+    }
+
+    /* COMPATIBILITY */
+
+    .compatibility {
+        text-align: center;
+        padding: 45px 60px;
+        background: #f4f0f8;
+    }
+
+    .odoo-badge {
+        display: inline-block;
+        padding: 9px 18px;
+        margin-top: 8px;
+        border-radius: 25px;
+        background: #714b9e;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    /* FOOTER */
+
+    footer {
+        padding: 30px 60px 40px;
+        text-align: center;
+        color: #8a818f;
+        font-size: 13px;
+        border-top: 1px solid #eee;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 800px) {
+        .hero,
+        section {
+            padding: 40px 25px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+        }
+
+        .features,
+        .screenshots,
+        .workflow,
+        .native-grid,
+        .not-list {
+            grid-template-columns: 1fr;
+        }
+
+        .step:not(:last-child):after {
+            display: none;
+        }
+
+        .page {
+            margin: 0;
+            border-radius: 0;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+```
+<!-- HERO -->
+<header class="hero">
+    <div class="badge">ODOO 18 • TIME OFF</div>
+
+    <h1>Leave Summary</h1>
+
+    <p class="subtitle">
+        Clear visibility, history, and reporting for employee leave balances
+        and accrual expiry.
+    </p>
+
+    <div class="hero-note">
+        Built around Odoo's native accrual and expiry logic
+    </div>
+</header>
+
+
+<!-- OVERVIEW -->
+<section>
+    <div class="section-label">Overview</div>
+    <h2>Understand your leave at a glance.</h2>
+
+    <div class="intro">
+        <p>
+            <strong>Leave Summary</strong> provides a clear view of employee
+            leave balances in Odoo 18, bringing allocated, taken, remaining,
+            and expired leave together in one place.
+        </p>
+
+        <p>
+            Odoo 18 continues to handle accruals, carryover, validity, and
+            expiry using its native Time Off functionality. This module
+            complements that process by recording relevant expiry events
+            and making them easier to review and analyze.
+        </p>
+
+        <p>
+            It gives HR users a practical reporting and visibility layer
+            without replacing Odoo's standard accrual mechanism.
+        </p>
+    </div>
+</section>
+
+
+<!-- FEATURES -->
+<section class="features-section">
+
+    <div class="section-label">Features</div>
+    <h2>Everything you need to understand leave balances.</h2>
+
+    <div class="features">
+
+        <div class="feature">
+            <div class="feature-icon">Σ</div>
+            <h3>Leave Summary</h3>
+            <p>
+                View allocated, taken, remaining, and expired leave
+                in one clear summary for employees and leave types.
+            </p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">↗</div>
+            <h3>Expiry History</h3>
+            <p>
+                Keep a dedicated history of accrual leave that has
+                expired, with the employee, leave type, allocation,
+                expiry date, and expired days.
+            </p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">◷</div>
+            <h3>As-of-Date Reporting</h3>
+            <p>
+                Analyze leave information as of a selected date
+                for clearer historical balance and expiry analysis.
+            </p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">▣</div>
+            <h3>Allocation History</h3>
+            <p>
+                Link expiry records to their originating allocations
+                for a clear audit trail.
+            </p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">✓</div>
+            <h3>Time Off Visibility</h3>
+            <p>
+                Make expiry information easier to understand alongside
+                standard Time Off balances.
+            </p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">▥</div>
+            <h3>List &amp; Pivot Analysis</h3>
+            <p>
+                Analyze expiry history by employee, leave type,
+                department, and date using Odoo's reporting views.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section>
+
+    <div class="section-label">How It Works</div>
+    <h2>Odoo calculates. Leave Summary makes it visible.</h2>
+
+    <div class="workflow">
+
+        <div class="step">
+            <div class="step-number">1</div>
+            <h3>Configure Odoo</h3>
+            <p>
+                Configure accrual validity and carryover using
+                Odoo's standard Accrual Plans.
+            </p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <h3>Odoo Processes</h3>
+            <p>
+                Odoo applies the configured accrual, carryover,
+                and expiry rules.
+            </p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">3</div>
+            <h3>Review &amp; Analyze</h3>
+            <p>
+                Leave Summary records relevant expiry events and
+                provides clear reporting and historical visibility.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- SCREENSHOTS -->
+<section class="screenshots-section">
+
+    <div class="section-label">Product Tour</div>
+    <h2>See it in action.</h2>
+
+    <div class="screenshots">
+
+        <div class="screenshot">
+            <div class="screenshot-title">Time Off Dashboard</div>
+            <div class="screenshot-placeholder">
+                <img src="screenshots/dashboard.png"
+                     alt="Dashboard Overview"
+                     style="
+                         display: block;
+                         width: 100%;
+                         height: 260px;
+                         object-fit: contain;
+                         background: #f5f3f8;
+                     ">
+            </div>
+        </div>
+
+        <div class="screenshot">
+            <div class="screenshot-title">Leave Summary</div>
+            <div class="screenshot-placeholder">
+                <img src="screenshots/leave_summary.png"
+                     alt="Leave Summary"
+                     style="
+                         display: block;
+                         width: 100%;
+                         height: 260px;
+                         object-fit: contain;
+                         background: #f5f3f8;
+                     ">
+            </div>
+        </div>
+
+        <div class="screenshot">
+            <div class="screenshot-title">Expiry History</div>
+            <div class="screenshot-placeholder">
+                <img src="screenshots/expiry_history.png"
+                     alt="Expiry History"
+                     style="
+                         display: block;
+                         width: 100%;
+                         height: 260px;
+                         object-fit: contain;
+                         background: #f5f3f8;
+                     ">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- NATIVE ODOO -->
+<section class="native">
+
+    <div class="section-label">Native Odoo Integration</div>
+
+    <h2>Works with Odoo, not against it.</h2>
+
+    <p class="intro">
+        The module works alongside Odoo 18's standard Time Off accrual
+        functionality rather than replacing it.
+    </p>
+
+    <div class="native-grid">
+
+        <div class="native-item">
+            <strong>Odoo calculates</strong><br>
+            accrual balances.
+        </div>
+
+        <div class="native-item">
+            <strong>Odoo applies</strong><br>
+            configured carryover rules.
+        </div>
+
+        <div class="native-item">
+            <strong>Odoo processes</strong><br>
+            accrual validity and expiry.
+        </div>
+
+        <div class="native-item">
+            <strong>Leave Summary records</strong><br>
+            relevant expiry events.
+        </div>
+
+        <div class="native-item">
+            <strong>Leave Summary provides</strong><br>
+            history and reporting.
+        </div>
+
+        <div class="native-item">
+            <strong>Your Odoo configuration</strong><br>
+            remains the source of truth.
+        </div>
+
+    </div>
+</section>
+
+
+<!-- WHAT IT DOES NOT DO -->
+<section class="not-section">
+
+    <div class="section-label">Designed to Complement Odoo</div>
+
+    <h2>What this module does not do.</h2>
+
+    <div class="not-list">
+
+        <div class="not-item">
+            It does not replace Odoo's accrual calculation.
+        </div>
+
+        <div class="not-item">
+            It does not implement a separate expiry engine.
+        </div>
+
+        <div class="not-item">
+            It does not override Odoo's native leave consumption logic.
+        </div>
+
+        <div class="not-item">
+            It does not introduce separate expiry rules.
+        </div>
+
+        <div class="not-item">
+            It does not modify the configured accrual plan logic.
+        </div>
+
+    </div>
+</section>
+
+
+<!-- COMPATIBILITY -->
+<section class="compatibility">
+
+    <div class="section-label">Compatibility</div>
+
+    <h2>Built for Odoo 18</h2>
+
+    <div class="odoo-badge">
+        Odoo 18 Community Edition
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+    Leave Summary · Clearer leave visibility for Odoo 18
+</footer>
+```
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<odoo>
+
+    <record id="view_hr_leave_allocation_form_custom" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.form.custom</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button"
+                        name="action_open_expiry_records"
+                        type="object"
+                        icon="fa-list"
+                        invisible="expiry_record_count == 0">
+
+                    <field name="expiry_record_count"
+                           widget="statinfo"
+                           string="Expiry History"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_leave_balance_report_user,Leave Balance Report User,model_hr_leave_balance_report,hr_holidays.group_hr_holidays_user,1,1,1,1
+access_hr_leave_expiry_user,Leave Expiry User,model_hr_leave_accrual_expiry,hr_holidays.group_hr_holidays_user,1,0,0,0
+access_hr_leave_expiry_manager,Leave Expiry Manager,model_hr_leave_accrual_expiry,hr_holidays.group_hr_holidays_manager,1,1,1,1

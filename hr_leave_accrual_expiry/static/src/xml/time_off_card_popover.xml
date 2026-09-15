@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="hr_leave_accrual_expiry.TimeOffCardPopoverExpired"
+       t-inherit="hr_holidays.TimeOffCardPopover"
+       t-inherit-mode="extension">
+
+        <xpath expr="//li[contains(text(),'Accrual')]"
+               position="after">
+
+            <li class="d-flex justify-content-between">
+                <span>Expired:</span>
+                <span class="ps-1" t-esc="props.expired"/>
+            </li>
+
+        </xpath>
+
+    </t>
+
+</templates>
