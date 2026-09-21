@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_hr_leave_accrual_expiry_list" model="ir.ui.view">
+        <field name="name">hr.leave.accrual.expiry.list</field>
+        <field name="model">hr.leave.accrual.expiry</field>
+        <field name="arch" type="xml">
+            <list string="Expiry History"
+                  create="false"
+                  edit="false"
+                  delete="false"
+                  default_order="expiry_date desc">
+
+                <field name="employee_id" width="20%"/>
+                <field name="holiday_status_id" width="20%"/>
+                <field name="carryover_date" width="20%"/>
+                <field name="expiry_date" string="Expire Date" width="20%"/>
+                <field name="expired_days" string="Expired Days" width="20%"/>
+
+                <!-- Technical / optional field -->
+                <field name="expired_hours" optional="hide"/>
+
+            </list>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="view_hr_leave_accrual_expiry_pivot" model="ir.ui.view">
+        <field name="name">hr.leave.accrual.expiry.pivot</field>
+        <field name="model">hr.leave.accrual.expiry</field>
+        <field name="arch" type="xml">
+            <pivot string="Expiry History Analysis">
+
+                <field name="employee_id" type="row"/>
+                <field name="holiday_status_id" type="row"/>
+                <field name="expiry_date" interval="month" type="col"/>
+                <field name="expired_days" type="measure"/>
+
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_hr_leave_accrual_expiry_search" model="ir.ui.view">
+        <field name="name">hr.leave.accrual.expiry.search</field>
+        <field name="model">hr.leave.accrual.expiry</field>
+        <field name="arch" type="xml">
+            <search string="Expiry History">
+
+                <field name="employee_id"/>
+                <field name="holiday_status_id"/>
+                <field name="allocation_id"/>
+                <field name="expiry_date"/>
+
+                <separator/>
+
+                <filter name="expiry_this_month"
+                        string="This Month"
+                        domain="[
+                            ('expiry_date', '&gt;=', (context_today() + relativedelta(day=1)).strftime('%Y-%m-%d')),
+                            ('expiry_date', '&lt;', (context_today() + relativedelta(months=1, day=1)).strftime('%Y-%m-%d'))
+                        ]"/>
+
+                <filter name="expiry_this_year"
+                        string="This Year"
+                        domain="[
+                            ('expiry_date', '&gt;=', (context_today() + relativedelta(month=1, day=1)).strftime('%Y-%m-%d')),
+                            ('expiry_date', '&lt;', (context_today() + relativedelta(years=1, month=1, day=1)).strftime('%Y-%m-%d'))
+                        ]"/>
+
+                <filter name="expiry_last_year"
+                        string="Last Year"
+                        domain="[
+                            ('expiry_date', '&gt;=', (context_today() + relativedelta(years=-1, month=1, day=1)).strftime('%Y-%m-%d')),
+                            ('expiry_date', '&lt;', (context_today() + relativedelta(month=0, day=1)).strftime('%Y-%m-%d'))
+                        ]"/>
+
+                <filter name="has_expired_days"
+                        string="Has Expired Days"
+                        domain="[('expired_days', '&gt;', 0)]"/>
+
+                <group>
+
+                    <filter name="group_employee"
+                            string="Employee"
+                            context="{'group_by': 'employee_id'}"/>
+
+                    <filter name="group_type"
+                            string="Time Off Type"
+                            context="{'group_by': 'holiday_status_id'}"/>
+
+                    <filter name="group_expiry_month"
+                            string="Expire Date"
+                            context="{'group_by': 'expiry_date:month'}"/>
+
+                    <filter name="group_company"
+                            string="Company"
+                            context="{'group_by': 'company_id'}"/>
+
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+    <!-- Reporting Action -->
+    <record id="action_hr_leave_accrual_expiry" model="ir.actions.act_window">
+        <field name="name">Expiry History</field>
+        <field name="res_model">hr.leave.accrual.expiry</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="view_id" ref="view_hr_leave_accrual_expiry_list"/>
+        <field name="search_view_id" ref="view_hr_leave_accrual_expiry_search"/>
+    </record>
+
+    <!-- Reporting Menu -->
+    <menuitem
+        id="menu_hr_leave_accrual_expiry"
+        name="Expiry History"
+        parent="hr_holidays.menu_hr_holidays_report"
+        action="action_hr_leave_accrual_expiry"
+        sequence="25"/>
+
+</odoo>

@@ -1,0 +1,23 @@
+.o_list_view th[data-name="next_expire_date"] {
+    padding-left: 50px !important;
+    text-align: center;
+}
+
+.date_col {
+    padding-left: 50px !important;
+    text-align: center;
+}
+
+.o_list_view th[data-name="number_of_days"] {
+    padding-right: 50px !important;
+    text-align: center;
+}
+
+.duration_col {
+    padding-right: 50px !important;
+    text-align: center;
+}
+
+.modal-dialog:has(.custom_wizard_small) {
+    max-width: 700px !important;
+}
